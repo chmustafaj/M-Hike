@@ -1,6 +1,7 @@
 package com.example.m_hike;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +23,8 @@ import java.util.ArrayList;
 
 public class HikeActivity extends AppCompatActivity {
     private ImageView hikeImage;
+    private RecyclerView observationsRecView;
+    private TextView txtAddObservations;
     private Bitmap image;
     private TextView txtHikeName, txtHikeLocation, txtHikeDate, txtParkingAvailable, txtHikeDifficulty, txtHikeDescription, txtHikeLength;
     private String hikeName, hikeLocation, desc, hikeDifficulty;
@@ -44,6 +48,16 @@ public class HikeActivity extends AppCompatActivity {
                 }
             }
             initViews();
+            txtAddObservations.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AddObservationsDialog dialog = new AddObservationsDialog();
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("hid",hid);
+                    dialog.setArguments(bundle);
+                    dialog.show(getSupportFragmentManager(),"Add an observation");
+                }
+            });
             editButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -74,6 +88,8 @@ public class HikeActivity extends AppCompatActivity {
         txtHikeDescription = findViewById(R.id.hike_description);
         txtHikeLength = findViewById(R.id.hike_length);
         editButton = findViewById(R.id.edit_button);
+        txtAddObservations = findViewById(R.id.txtAddObservation);
+        observationsRecView = findViewById(R.id.observationsRecView);
 
 
         hikeImage.setImageBitmap(currentHike.image);

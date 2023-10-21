@@ -48,8 +48,7 @@
                 android:paddingRight="16dp"
                 app:boxBackgroundColor="#EFEFEF"
                 app:layout_constraintTop_toTopOf="@id/crossButton"
-                android:layout_marginTop="60dp"
-                >
+                android:layout_marginTop="60dp">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtEnterHikeName"

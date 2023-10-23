@@ -1,6 +1,7 @@
 package com.example.m_hike;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.example.m_hike.database.AppDatabase;
 import com.example.m_hike.objects.Hike;
+import com.example.m_hike.objects.Observation;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ public class HikeActivity extends AppCompatActivity {
     private boolean parkingAvailable;
 
     private ImageButton editButton;
+    private ObservationsRecyclerViewAdapter adapter = new ObservationsRecyclerViewAdapter();
     Hike currentHike;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +45,27 @@ public class HikeActivity extends AppCompatActivity {
             hid = intent.getIntExtra("hid", 0);
             AppDatabase db = AppDatabase.getInstance(HikeActivity.this);
             ArrayList<Hike> allHikes = (ArrayList<Hike>) db.hikeDao().getAllHikes();
+            ArrayList<Observation> allObservations = (ArrayList<Observation>) db.observationDao().getAllObservations();
+            ArrayList<Observation> observations = new ArrayList<>();
             for (Hike h: allHikes){
                 if(h.hid== hid){
                     currentHike = h;
                 }
             }
             initViews();
+            observationsRecView.setAdapter(adapter);
+            observationsRecView.setLayoutManager(new LinearLayoutManager(this));
+            for (Observation o : allObservations){
+                if(o.hid == currentHike.hid){
+                    observations.add(o);
+                }
+            }
+
+            if(observations!=null){
+                if(observations.size()>0){
+                    adapter.setObservations(observations);
+                }
+            }
             txtAddObservations.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -90,6 +108,7 @@ public class HikeActivity extends AppCompatActivity {
         editButton = findViewById(R.id.edit_button);
         txtAddObservations = findViewById(R.id.txtAddObservation);
         observationsRecView = findViewById(R.id.observationsRecView);
+
 
 
         hikeImage.setImageBitmap(currentHike.image);

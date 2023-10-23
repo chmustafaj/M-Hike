@@ -64,6 +64,7 @@ public class AddObservationsDialog extends DialogFragment {
                 Observation newObservation = new Observation(currentHike.hid, txtYourName.getText().toString(),getCurrentDate(), txtObservation.getText().toString());
                 AppDatabase db = AppDatabase.getInstance(getContext());
                 db.observationDao().insertSingleObservation(newObservation);
+                dismiss();
 
             }
         });

@@ -6,11 +6,24 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment"
     android:id="@+id/homeScreen">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Empty"
+        android:id="@+id/txtEmpty"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recViewHikes"
+        android:textSize="50dp"
+        android:visibility="gone"/>
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="60dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recViewHikes">
+        android:id="@+id/recViewHikes"
+        android:layout_marginBottom="40dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 

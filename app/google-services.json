@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "113367002174",
+    "project_id": "m-hike-92b69",
+    "storage_bucket": "m-hike-92b69.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113367002174:android:c115de3a90f5075b2d756f",
+        "android_client_info": {
+          "package_name": "com.example.m_hike"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJc95-AcDU4l4jKSjTGfQL6NCFr4iNcE0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

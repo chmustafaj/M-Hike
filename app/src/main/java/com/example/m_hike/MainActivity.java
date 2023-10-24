@@ -15,26 +15,31 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.example.m_hike.databinding.ActivityMainBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.FirebaseApp;
 
 public class MainActivity extends AppCompatActivity implements ButtonVisibilityListener {
 
     private ActivityMainBinding binding;
     Toolbar myToolBar;
     FloatingActionButton createHike;
+    BottomNavigationView bottomNavigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        bottomNavigationView = binding.navView;
         initViews();
+        FirebaseApp.initializeApp(this); // Initialize Firebase
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+//        BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_search, R.id.navigation_notifications)
-                .build();
+//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
+//                R.id.navigation_home, R.id.navigation_search, R.id.navigation_notifications)
+//                .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
 //        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
@@ -56,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements ButtonVisibilityL
                         .commit();
                 createHike.setVisibility(View.GONE);
                 myToolBar.setVisibility(View.GONE);
+                bottomNavigationView.setVisibility(View.GONE);
 
             }
         });
@@ -71,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements ButtonVisibilityL
     public void callBackMethod() {
         myToolBar.setVisibility(View.VISIBLE);
         createHike.setVisibility(View.VISIBLE);
+        bottomNavigationView.setVisibility(View.VISIBLE);
         Log.d("TAG", "onButtonVisibilityChange: ");
     }
 

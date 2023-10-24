@@ -8,10 +8,12 @@
         android:id="@+id/txtUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
         android:text="User Name"
         android:textStyle="bold" />
 
     <TextView
+        android:textColor="@color/black"
         android:id="@+id/txtObservation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -20,11 +22,12 @@
         android:text="observation text" />
 
     <TextView
+        android:textColor="@color/black"
         android:id="@+id/txtDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txtObservation"
         android:layout_alignParentEnd="true"
+        android:layout_below="@id/txtUserName"
         android:text="date" />
 
 </RelativeLayout>

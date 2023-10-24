@@ -3,14 +3,12 @@ package com.example.m_hike;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
@@ -18,21 +16,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.m_hike.database.AppDatabase;
 import com.example.m_hike.objects.Hike;
-import com.example.m_hike.ui.home.HomeFragment;
+import com.example.m_hike.objects.Observation;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -47,15 +49,19 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
     private String name, location,  difficulty, desc;
     private int hikeYear, hikeMonth, hikeDay, length =-1;
     private boolean parkingIsAvailable;
-    TextInputLayout datePicker;
-    TextInputEditText showDate;
-    TextInputEditText parkingAvailable;
+//    TextInputLayout datePicker;
+
     Button btnClose, btnDone;
     Spinner difficultiesSpinner;
     private TextInputEditText edtName, edtLocation, edtDesc, edtLength;
     private TextInputLayout textBoxName, textBoxLocation, textBoxDesc, textBoxLength, textBoxDate;
+    private TextView txtDate, txtParking;
     private ImageView btnAddImage;
     private Bitmap hikeImage;
+    private FirebaseDatabase mFirebaseDb;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+    private DatabaseReference myRef;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,6 +69,10 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_hike, container, false);
         initViews(view);
+        mAuth = FirebaseAuth.getInstance();
+        mFirebaseDb = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDb.getReference();
+//        firebaseTest();
         // Registers a photo picker activity launcher in single-select mode.
         ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
                 registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
@@ -103,7 +113,7 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
 
             }
         });
-        showDate.setOnClickListener(new View.OnClickListener() {
+        txtDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // on below line we are getting
@@ -129,7 +139,7 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
                                 hikeDay = day;
                                 hikeMonth = month;
 
-                                showDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                txtDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                             }
                         },
@@ -156,7 +166,7 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
                 location = edtLocation.getText().toString();
                 desc = edtDesc.getText().toString();
                 difficulty = difficultiesSpinner.getSelectedItem().toString();
-                if (parkingAvailable.getText().toString().equals("Yes")){
+                if (txtParking.getText().toString().equals("Yes")){
                     parkingIsAvailable = true;
                 }else{
                     parkingIsAvailable = false;
@@ -164,7 +174,9 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
                 if(!name.equals("") && !location.equals("") && !difficulty.equals("") && hikeYear!=-1 && !edtLength.getText().toString().equals("") && hikeMonth !=-1 && hikeDay!=-1 ){
                     length = Integer.parseInt(edtLength.getText().toString());
 
-                    saveHike();
+                    saveHikeToRoom();
+                    // TODO
+//                    saveHikeToFirebase();
                     close();
                 }else{
                     if(name.equals("")){
@@ -185,7 +197,7 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
 
             }
         });
-        parkingAvailable.setOnClickListener(new View.OnClickListener() {
+        txtParking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialogClickListener = new DialogInterface.OnClickListener() {
@@ -196,13 +208,13 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
                             // for our positive button
                             case DialogInterface.BUTTON_POSITIVE:
                                 // on below line we are displaying a toast message.
-                                parkingAvailable.setText("Yes");
+                                txtParking.setText("Yes");
                                 break;
                             // on below line we are setting click listener
                             // for our negative button.
                             case DialogInterface.BUTTON_NEGATIVE:
                                 // on below line we are dismissing our dialog box.
-                                parkingAvailable.setText("No");
+                                txtParking.setText("No");
                                 dialog.dismiss();
 
                         }
@@ -228,6 +240,39 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
         return view;
     }
 
+    private void firebaseTest() {
+        Hike currentHike = new Hike();
+        AppDatabase db = AppDatabase.getInstance(getContext());
+        ArrayList<Hike> allHikes = (ArrayList<Hike>) db.hikeDao().getAllHikes();
+        for (Hike h: allHikes){
+            if(h.hid== 2){
+                currentHike = h;
+            }
+        }
+
+        myRef.child("hikes").child(Integer.toString(currentHike.hid)).setValue(currentHike);
+
+    }
+
+    private void saveHikeToFirebase() {
+//        Hike currentHike = new Hike();
+//        AppDatabase db = AppDatabase.getInstance(getContext());
+//        ArrayList<Hike> allHikes = (ArrayList<Hike>) db.hikeDao().getAllHikes();
+//        for (Hike h: allHikes){
+//            if(h.hid== 2){
+//                currentHike = h;
+//            }
+//        }
+
+        myRef.child("hikes").push().setValue(new Hike(name, location, hikeYear, hikeMonth, hikeDay, parkingIsAvailable, length, difficulty, desc, null));
+//        Hike hike =  new Hike(name, location, hikeYear, hikeMonth, hikeDay, parkingIsAvailable, length, difficulty, desc, hikeImage);
+//        hike.image = null;
+
+
+// Add the Hike to the Firebase Realtime Database
+//        myRef.child("hikes").child(Integer.toString(6)).setValue(hike);
+    }
+
     private void close() {
         if(buttonVisibilityListener!=null){
             buttonVisibilityListener.callBackMethod();
@@ -248,16 +293,18 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
         Log.d("TAG", "onStop: ");
     }
 
-    private void saveHike() {
+    private void saveHikeToRoom() {
         db.hikeDao().insertSingleHike(new Hike(name, location, hikeYear, hikeMonth, hikeDay, parkingIsAvailable, length, difficulty, desc, hikeImage));
 
     }
 
     void initViews(View view){
         btnClose = view.findViewById(R.id.crossButton);
-        datePicker = view.findViewById(R.id.date);
-        showDate = view.findViewById(R.id.txtEnterDate);
-        parkingAvailable = view.findViewById(R.id.txtParking);
+//        datePicker = view.findViewById(R.id.date);
+        txtParking = view.findViewById(R.id.parking);
+        txtDate = view.findViewById(R.id.date);
+//        showDate = view.findViewById(R.id.txtEnterDate);
+//        parkingAvailable = view.findViewById(R.id.txtParking);
         difficultiesSpinner = view.findViewById(R.id.difficultySpinner);
         edtName = view.findViewById(R.id.txtEnterHikeName);
         edtLocation = view.findViewById(R.id.txtEnterLocation);
@@ -267,7 +314,7 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
         textBoxDesc = view.findViewById(R.id.description);
         textBoxLength = view.findViewById(R.id.length);
         textBoxLocation = view.findViewById(R.id.location);
-        textBoxDate = view.findViewById(R.id.date);
+//        textBoxDate = view.findViewById(R.id.date);
         btnDone = view.findViewById(R.id.checkButton);
         btnAddImage = view.findViewById(R.id.btnAddImage);
     }

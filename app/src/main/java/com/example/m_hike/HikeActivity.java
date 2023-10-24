@@ -23,7 +23,7 @@ import com.example.m_hike.objects.Observation;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
-public class HikeActivity extends AppCompatActivity {
+public class HikeActivity extends AppCompatActivity implements ObservationAddedListener {
     private ImageView hikeImage;
     private RecyclerView observationsRecView;
     private TextView txtAddObservations;
@@ -41,35 +41,17 @@ public class HikeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hike);
         Intent intent = getIntent();
+        initViews();
+
         if(intent!=null){
             hid = intent.getIntExtra("hid", 0);
-            AppDatabase db = AppDatabase.getInstance(HikeActivity.this);
-            ArrayList<Hike> allHikes = (ArrayList<Hike>) db.hikeDao().getAllHikes();
-            ArrayList<Observation> allObservations = (ArrayList<Observation>) db.observationDao().getAllObservations();
-            ArrayList<Observation> observations = new ArrayList<>();
-            for (Hike h: allHikes){
-                if(h.hid== hid){
-                    currentHike = h;
-                }
-            }
-            initViews();
-            observationsRecView.setAdapter(adapter);
-            observationsRecView.setLayoutManager(new LinearLayoutManager(this));
-            for (Observation o : allObservations){
-                if(o.hid == currentHike.hid){
-                    observations.add(o);
-                }
-            }
-
-            if(observations!=null){
-                if(observations.size()>0){
-                    adapter.setObservations(observations);
-                }
-            }
+            initRecView();
+            setViews();
             txtAddObservations.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     AddObservationsDialog dialog = new AddObservationsDialog();
+                    dialog.setCallBackInterface(HikeActivity.this);
                     Bundle bundle = new Bundle();
                     bundle.putInt("hid",hid);
                     dialog.setArguments(bundle);
@@ -95,7 +77,18 @@ public class HikeActivity extends AppCompatActivity {
         super.onBackPressed();
         startActivity(new Intent(HikeActivity.this, MainActivity.class));
     }
+    void setViews(){
+        hikeImage.setImageBitmap(currentHike.image);
+        txtHikeLength.setText(String.valueOf(currentHike.lengthOfHeightInMeters));
+        txtHikeName.setText(currentHike.name);
+        txtHikeDescription.setText(currentHike.desc);
+        txtHikeDifficulty.setText("Difficulty: "+currentHike.difficulty);
+        txtHikeLocation.setText(currentHike.location);
+        Log.d("TAG", "initViews: hike location "+hikeLocation);
+        txtParkingAvailable.setText("Parking Available: "+String.valueOf(currentHike.parkingIsAvailable));
+        txtHikeDate.setText(currentHike.day + "-" + (currentHike.month+ 1) + "-" + currentHike.year);
 
+    }
     void initViews(){
         hikeImage = findViewById(R.id.hike_image);
         txtHikeName = findViewById(R.id.hike_name);
@@ -111,17 +104,38 @@ public class HikeActivity extends AppCompatActivity {
 
 
 
-        hikeImage.setImageBitmap(currentHike.image);
-        txtHikeLength.setText(String.valueOf(currentHike.lengthOfHeightInMeters));
-        txtHikeName.setText(currentHike.name);
-        txtHikeDescription.setText(currentHike.desc);
-        txtHikeDifficulty.setText("Difficulty: "+currentHike.difficulty);
-        txtHikeLocation.setText(currentHike.location);
-        Log.d("TAG", "initViews: hike location "+hikeLocation);
-        txtParkingAvailable.setText("Parking Available: "+String.valueOf(currentHike.parkingIsAvailable));
-        txtHikeDate.setText(currentHike.day + "-" + (currentHike.month+ 1) + "-" + currentHike.year);
 
 
 
+    }
+    void initRecView(){
+        AppDatabase db = AppDatabase.getInstance(HikeActivity.this);
+        ArrayList<Hike> allHikes = (ArrayList<Hike>) db.hikeDao().getAllHikes();
+        ArrayList<Observation> allObservations = (ArrayList<Observation>) db.observationDao().getAllObservations();
+        ArrayList<Observation> observations = new ArrayList<>();
+        for (Hike h: allHikes){
+            if(h.hid== hid){
+                currentHike = h;
+            }
+        }
+        observationsRecView.setAdapter(adapter);
+        observationsRecView.setLayoutManager(new LinearLayoutManager(this));
+        for (Observation o : allObservations){
+            if(o.hid == currentHike.hid){
+                observations.add(o);
+            }
+        }
+
+        if(observations!=null){
+            if(observations.size()>0){
+                adapter.setObservations(observations);
+            }
+        }
+    }
+
+    @Override
+    public void callbackMethodObservation() {
+        initRecView();
+        Log.d("TAG", "callbackMethodObservation: ");
     }
 }

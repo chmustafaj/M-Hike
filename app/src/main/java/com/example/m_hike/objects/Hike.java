@@ -33,7 +33,9 @@ public class Hike {
     public String desc;
     @ColumnInfo(name = "image")
     public Bitmap image;
+    public Hike(){
 
+    }
     public Hike(String name, String location, int year, int month, int day, Boolean parkingIsAvailable, int lengthOfHeightInMeters, String difficulty, String desc, Bitmap image) {
         this.name = name;
         this.location = location;

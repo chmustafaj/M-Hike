@@ -3,6 +3,7 @@ package com.example.m_hike;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -48,12 +49,13 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
     private AppDatabase db;
     private String name, location,  difficulty, desc;
     private int hikeYear, hikeMonth, hikeDay, length =-1;
+    private int elevation = 0;
     private boolean parkingIsAvailable;
 //    TextInputLayout datePicker;
 
     Button btnClose, btnDone;
     Spinner difficultiesSpinner;
-    private TextInputEditText edtName, edtLocation, edtDesc, edtLength;
+    private TextInputEditText edtName, edtLocation, edtDesc, edtLength, edtElevation;
     private TextInputLayout textBoxName, textBoxLocation, textBoxDesc, textBoxLength, textBoxDate;
     private TextView txtDate, txtParking;
     private ImageView btnAddImage;
@@ -165,6 +167,9 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
                 name =edtName.getText().toString();
                 location = edtLocation.getText().toString();
                 desc = edtDesc.getText().toString();
+                if(!edtElevation.getText().toString().equals("")){
+                    elevation = Integer.parseInt(edtElevation.getText().toString());
+                }
                 difficulty = difficultiesSpinner.getSelectedItem().toString();
                 if (txtParking.getText().toString().equals("Yes")){
                     parkingIsAvailable = true;
@@ -264,7 +269,7 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
 //            }
 //        }
 
-        myRef.child("hikes").push().setValue(new Hike(name, location, hikeYear, hikeMonth, hikeDay, parkingIsAvailable, length, difficulty, desc, null));
+//        myRef.child("hikes").push().setValue(new Hike(name, location, hikeYear, hikeMonth, hikeDay, parkingIsAvailable, length, difficulty, desc, null));
 //        Hike hike =  new Hike(name, location, hikeYear, hikeMonth, hikeDay, parkingIsAvailable, length, difficulty, desc, hikeImage);
 //        hike.image = null;
 
@@ -294,7 +299,11 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
     }
 
     private void saveHikeToRoom() {
-        db.hikeDao().insertSingleHike(new Hike(name, location, hikeYear, hikeMonth, hikeDay, parkingIsAvailable, length, difficulty, desc, hikeImage));
+        if(hikeImage==null){
+            hikeImage = BitmapFactory.decodeResource(getResources(), R.drawable.image);
+
+        }
+        db.hikeDao().insertSingleHike(new Hike(name, location, hikeYear, hikeMonth, hikeDay, parkingIsAvailable, length, difficulty, desc, hikeImage, elevation));
 
     }
 
@@ -314,6 +323,7 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
         textBoxDesc = view.findViewById(R.id.description);
         textBoxLength = view.findViewById(R.id.length);
         textBoxLocation = view.findViewById(R.id.location);
+        edtElevation = view.findViewById(R.id.txtElevation);
 //        textBoxDate = view.findViewById(R.id.date);
         btnDone = view.findViewById(R.id.checkButton);
         btnAddImage = view.findViewById(R.id.btnAddImage);

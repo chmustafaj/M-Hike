@@ -10,7 +10,7 @@ import androidx.room.TypeConverters;
 import com.example.m_hike.objects.Hike;
 import com.example.m_hike.objects.Observation;
 
-@Database(entities = {Hike.class, Observation.class}, version = 1)
+@Database(entities = {Hike.class, Observation.class}, version = 2)
 @TypeConverters(Converters.class )
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase instance;

@@ -28,9 +28,9 @@ public class HikeActivity extends AppCompatActivity implements ObservationAddedL
     private RecyclerView observationsRecView;
     private TextView txtAddObservations;
     private Bitmap image;
-    private TextView txtHikeName, txtHikeLocation, txtHikeDate, txtParkingAvailable, txtHikeDifficulty, txtHikeDescription, txtHikeLength;
+    private TextView txtHikeName, txtHikeLocation, txtHikeDate, txtParkingAvailable, txtHikeDifficulty, txtHikeDescription, txtHikeLength, txtHikeElevation;
     private String hikeName, hikeLocation, desc, hikeDifficulty;
-    private int hikeLength, hikeYear, hikeMonth, hikeDay, hid;
+    private int hikeLength, hikeYear, hikeMonth, hikeDay, hid, hikeElevation;
     private boolean parkingAvailable;
 
     private ImageButton editButton;
@@ -79,7 +79,7 @@ public class HikeActivity extends AppCompatActivity implements ObservationAddedL
     }
     void setViews(){
         hikeImage.setImageBitmap(currentHike.image);
-        txtHikeLength.setText(String.valueOf(currentHike.lengthOfHeightInMeters));
+        txtHikeLength.setText("Length: "+String.valueOf(currentHike.lengthOfHeightInMeters));
         txtHikeName.setText(currentHike.name);
         txtHikeDescription.setText(currentHike.desc);
         txtHikeDifficulty.setText("Difficulty: "+currentHike.difficulty);
@@ -87,6 +87,11 @@ public class HikeActivity extends AppCompatActivity implements ObservationAddedL
         Log.d("TAG", "initViews: hike location "+hikeLocation);
         txtParkingAvailable.setText("Parking Available: "+String.valueOf(currentHike.parkingIsAvailable));
         txtHikeDate.setText(currentHike.day + "-" + (currentHike.month+ 1) + "-" + currentHike.year);
+        if(currentHike.elevation!=0){
+            txtHikeElevation.setText("Elevation: "+currentHike.elevation);
+        }else{
+            txtHikeElevation.setVisibility(View.GONE);
+        }
 
     }
     void initViews(){
@@ -101,7 +106,7 @@ public class HikeActivity extends AppCompatActivity implements ObservationAddedL
         editButton = findViewById(R.id.edit_button);
         txtAddObservations = findViewById(R.id.txtAddObservation);
         observationsRecView = findViewById(R.id.observationsRecView);
-
+        txtHikeElevation = findViewById(R.id.hike_elevation);
 
 
 

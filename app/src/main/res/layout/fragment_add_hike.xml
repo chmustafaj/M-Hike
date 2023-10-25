@@ -130,6 +130,28 @@
                     android:singleLine="true"/>
             </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/elevation"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:hint="Elevation in metres"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                app:boxBackgroundColor="#EFEFEF"
+                app:layout_constraintTop_toBottomOf="@+id/length"
+                android:layout_marginTop="10dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtElevation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:singleLine="true"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/description"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
@@ -139,7 +161,7 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 app:boxBackgroundColor="#EFEFEF"
-                app:layout_constraintTop_toBottomOf="@+id/length"
+                app:layout_constraintTop_toBottomOf="@+id/elevation"
                 android:layout_marginTop="10dp">
 
                 <com.google.android.material.textfield.TextInputEditText

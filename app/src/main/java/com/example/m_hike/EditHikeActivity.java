@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.example.m_hike.database.AppDatabase;
 import com.example.m_hike.objects.Hike;
@@ -40,14 +41,13 @@ public class EditHikeActivity extends AppCompatActivity {
     private boolean parkingAvailable;
     private Bitmap image;
     TextInputLayout datePicker;
-    TextInputEditText showDate;
-    TextInputEditText edtParkingAvailable;
     private ImageView btnAddImage;
+    private TextView txtDate, txtParking;
 
     Button btnClose, btnDone;
     Spinner difficultiesSpinner;
-    private TextInputEditText edtName, edtLocation, edtDesc, edtLength;
-    private TextInputLayout textBoxName, textBoxLocation, textBoxDesc, textBoxLength, textBoxDate;
+    private TextInputEditText edtName, edtLocation, edtDesc, edtLength, edtElevation;
+    private TextInputLayout textBoxName, textBoxLocation, textBoxDesc, textBoxLength;
     private Bitmap hikeImage;
 
 
@@ -112,7 +112,7 @@ public class EditHikeActivity extends AppCompatActivity {
 
                 }
             });
-            showDate.setOnClickListener(new View.OnClickListener() {
+            txtDate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // on below line we are getting
@@ -138,7 +138,7 @@ public class EditHikeActivity extends AppCompatActivity {
                                     hikeDay = day;
                                     hikeMonth = month;
 
-                                    showDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                    txtDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
 
                                 }
                             },
@@ -164,7 +164,7 @@ public class EditHikeActivity extends AppCompatActivity {
                     hikeLocation = edtLocation.getText().toString();
                     desc = edtDesc.getText().toString();
                     hikeDifficulty = difficultiesSpinner.getSelectedItem().toString();
-                    if (edtParkingAvailable.getText().toString().equals("Yes")){
+                    if (txtParking.getText().toString().equals("Yes")){
                         parkingAvailable = true;
                     }else{
                         parkingAvailable = false;
@@ -181,7 +181,7 @@ public class EditHikeActivity extends AppCompatActivity {
                             textBoxLocation.setError("Location is required!");
                         }
                         if(hikeYear == -1 || hikeDay == -1 || hikeMonth == -1){
-                            textBoxDate.setError("Date is required!");
+                            txtDate.setError("Date is required!");
                         }
                         if(hikeLength==-1){
                             textBoxLength.setError("Length is required!");
@@ -192,7 +192,7 @@ public class EditHikeActivity extends AppCompatActivity {
 
                 }
             });
-            edtParkingAvailable.setOnClickListener(new View.OnClickListener() {
+            txtParking.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dialogClickListener = new DialogInterface.OnClickListener() {
@@ -203,13 +203,13 @@ public class EditHikeActivity extends AppCompatActivity {
                                 // for our positive button
                                 case DialogInterface.BUTTON_POSITIVE:
                                     // on below line we are displaying a toast message.
-                                    edtParkingAvailable.setText("Yes");
+                                    txtParking.setText("Yes");
                                     break;
                                 // on below line we are setting click listener
                                 // for our negative button.
                                 case DialogInterface.BUTTON_NEGATIVE:
                                     // on below line we are dismissing our dialog box.
-                                    edtParkingAvailable.setText("No");
+                                    txtParking.setText("No");
                                     dialog.dismiss();
 
                             }
@@ -236,9 +236,6 @@ public class EditHikeActivity extends AppCompatActivity {
     }
     void initViews(){
         btnClose = findViewById(R.id.crossButton);
-        datePicker = findViewById(R.id.date);
-        showDate = findViewById(R.id.txtEnterDate);
-        edtParkingAvailable = findViewById(R.id.txtParking);
         difficultiesSpinner = findViewById(R.id.difficultySpinner);
         edtName = findViewById(R.id.txtEnterHikeName);
         edtLocation = findViewById(R.id.txtEnterLocation);
@@ -248,9 +245,11 @@ public class EditHikeActivity extends AppCompatActivity {
         textBoxDesc = findViewById(R.id.description);
         textBoxLength = findViewById(R.id.length);
         textBoxLocation = findViewById(R.id.location);
-        textBoxDate = findViewById(R.id.date);
         btnDone = findViewById(R.id.checkButton);
         btnAddImage = findViewById(R.id.btnAddImage);
+        edtElevation = findViewById(R.id.txtElevation);
+        txtDate = findViewById(R.id.date);
+        txtParking = findViewById(R.id.parking);
 
         btnAddImage.setImageBitmap(currentHike.image);
         edtLength.setText(String.valueOf(currentHike.lengthOfHeightInMeters));
@@ -264,12 +263,21 @@ public class EditHikeActivity extends AppCompatActivity {
                 difficultiesSpinner.setSelection(2, false);
         }
         edtLocation.setText(currentHike.location);
-        edtParkingAvailable.setText(Boolean.toString(currentHike.parkingIsAvailable));
-        showDate.setText(currentHike.day+ "-" + (currentHike.month + 1) + "-" + currentHike.year);
+        txtParking.setText(Boolean.toString(currentHike.parkingIsAvailable));
+        txtDate.setText(currentHike.day+ "-" + (currentHike.month + 1) + "-" + currentHike.year);
         edtName.setText(currentHike.name);
     }
     private void saveHike() {
-        Hike editedHike = new Hike(edtName.getText().toString(), edtLocation.getText().toString(), hikeYear, hikeMonth, hikeDay, Boolean.getBoolean(edtParkingAvailable.getText().toString()), Integer.parseInt(edtLength.getText().toString()), difficultiesSpinner.getSelectedItem().toString(), edtDesc.getText().toString(), hikeImage);
+        if(hikeImage==null){
+            hikeImage = BitmapFactory.decodeResource(getResources(), R.drawable.image);
+
+        }
+        String strElevation = edtElevation.getText().toString();
+        int elevation = 0;
+        if(!strElevation.equals("")){
+            elevation = Integer.parseInt(edtElevation.getText().toString());
+        }
+        Hike editedHike = new Hike(edtName.getText().toString(), edtLocation.getText().toString(), hikeYear, hikeMonth, hikeDay, Boolean.getBoolean(txtParking.getText().toString()), Integer.parseInt(edtLength.getText().toString()), difficultiesSpinner.getSelectedItem().toString(), edtDesc.getText().toString(), hikeImage, elevation);
         editedHike.hid = hid;
         db.hikeDao().update(editedHike);
 

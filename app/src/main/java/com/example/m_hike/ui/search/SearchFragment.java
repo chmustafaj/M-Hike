@@ -57,6 +57,8 @@ public class SearchFragment extends Fragment {
                     if(items!=null){
                         adapter.setHikes(items, getContext());
                     }
+                }else{
+                    adapter.setHikes(new ArrayList<>(), getContext());
                 }
             }
 
@@ -78,36 +80,26 @@ public class SearchFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-    public ArrayList<Hike> searchForItems(String text){
+    public ArrayList<Hike> searchForItems(String text) {
         ArrayList<Hike> allItems = allHikes;
         if (null != allItems) {
             ArrayList<Hike> items = new ArrayList<>();
-            for (Hike item: allItems) {
-                if (item.getName().equalsIgnoreCase(text)) {
+            String searchText = text.toLowerCase().replaceAll("\\s", ""); // Convert search text to lowercase and remove spaces
+
+            for (Hike item : allItems) {
+                String hikeName = item.getName().toLowerCase().replaceAll("\\s", ""); // Convert hike name to lowercase and remove spaces
+
+                if (hikeName.contains(searchText)) {
                     items.add(item);
-                }
-
-                String[] names = item.getName().split(" ");
-                for (int i=0; i<names.length; i++) {
-                    if (text.equalsIgnoreCase(names[i])) {
-                        boolean doesExist = false;
-
-                        for (Hike j: items) {
-                            if (j.hid == item.hid) {
-                                doesExist = true;
-                            }
-                        }
-
-                        if (!doesExist) {
-                            items.add(item);
-                        }
-                    }
                 }
             }
 
             return items;
         }
 
-        return null;
+        return new ArrayList<>(); // Return an empty list if allItems is null
     }
+
+
+
 }

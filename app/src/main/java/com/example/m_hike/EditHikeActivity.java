@@ -263,6 +263,7 @@ public class EditHikeActivity extends AppCompatActivity {
                 difficultiesSpinner.setSelection(2, false);
         }
         edtLocation.setText(currentHike.location);
+        edtElevation.setText(String.valueOf(currentHike.elevation));
         txtParking.setText(Boolean.toString(currentHike.parkingIsAvailable));
         txtDate.setText(currentHike.day+ "-" + (currentHike.month + 1) + "-" + currentHike.year);
         edtName.setText(currentHike.name);

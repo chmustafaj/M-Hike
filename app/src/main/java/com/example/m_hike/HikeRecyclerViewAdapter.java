@@ -66,6 +66,9 @@ public class HikeRecyclerViewAdapter extends RecyclerView.Adapter<HikeRecyclerVi
         this.context = context;
         notifyDataSetChanged();
     }
+    public void addHike(Hike hike){
+        hikesList.add(hike);
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         private ImageView hikeImageView;

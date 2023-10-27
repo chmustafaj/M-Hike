@@ -4,26 +4,28 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.example.m_hike.objects.Hike;
+import com.example.m_hike.ui.home.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.m_hike.databinding.ActivityMainBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
 
-public class MainActivity extends AppCompatActivity implements ButtonVisibilityListener {
+public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     Toolbar myToolBar;
     FloatingActionButton createHike;
     BottomNavigationView bottomNavigationView;
-
+    AddHikeFragment addHikeFragment;
+    HomeFragment homeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,24 +33,19 @@ public class MainActivity extends AppCompatActivity implements ButtonVisibilityL
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         bottomNavigationView = binding.navView;
+        homeFragment = new HomeFragment();
         initViews();
         FirebaseApp.initializeApp(this); // Initialize Firebase
 
-//        BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-//        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-//                R.id.navigation_home, R.id.navigation_search, R.id.navigation_notifications)
-//                .build();
+
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
 
         createHike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddHikeFragment fragment = new AddHikeFragment();
-                fragment.setCallBackInterface(MainActivity.this);
+                addHikeFragment = new AddHikeFragment();
                 getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(
                                 R.anim.slide_in_bottom,  // enter
@@ -56,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements ButtonVisibilityL
                                 R.anim.fade_in,   // popEnter
                                 R.anim.slide_out_bottom  // popExit
                         )
-                        .replace(R.id.nav_host_fragment_activity_main, fragment)
+                        .replace(R.id.nav_host_fragment_activity_main, addHikeFragment)
                         .addToBackStack(null)
                         .commit();
                 createHike.setVisibility(View.GONE);
@@ -71,14 +68,6 @@ public class MainActivity extends AppCompatActivity implements ButtonVisibilityL
         createHike = findViewById(R.id.btnAddHike);
         myToolBar = findViewById(R.id.custom_toolbar);
 
-    }
-
-    @Override
-    public void callBackMethod() {
-        myToolBar.setVisibility(View.VISIBLE);
-        createHike.setVisibility(View.VISIBLE);
-        bottomNavigationView.setVisibility(View.VISIBLE);
-        Log.d("TAG", "onButtonVisibilityChange: ");
     }
 
 

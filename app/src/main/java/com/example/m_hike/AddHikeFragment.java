@@ -1,7 +1,9 @@
 package com.example.m_hike;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -9,10 +11,14 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
+import android.telecom.Call;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +34,7 @@ import android.widget.TextView;
 import com.example.m_hike.database.AppDatabase;
 import com.example.m_hike.objects.Hike;
 import com.example.m_hike.objects.Observation;
+import com.example.m_hike.ui.home.HomeFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,6 +50,7 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
 
 
     ButtonVisibilityListener buttonVisibilityListener;
+    CallbackInterfaceAddHike callbackInterfaceAddHike;
 //    HomeScreenVisibilityListener homeScreenVisibilityListener;
 
     private DialogInterface.OnClickListener dialogClickListener;
@@ -259,34 +267,8 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
 
     }
 
-    private void saveHikeToFirebase() {
-//        Hike currentHike = new Hike();
-//        AppDatabase db = AppDatabase.getInstance(getContext());
-//        ArrayList<Hike> allHikes = (ArrayList<Hike>) db.hikeDao().getAllHikes();
-//        for (Hike h: allHikes){
-//            if(h.hid== 2){
-//                currentHike = h;
-//            }
-//        }
-
-//        myRef.child("hikes").push().setValue(new Hike(name, location, hikeYear, hikeMonth, hikeDay, parkingIsAvailable, length, difficulty, desc, null));
-//        Hike hike =  new Hike(name, location, hikeYear, hikeMonth, hikeDay, parkingIsAvailable, length, difficulty, desc, hikeImage);
-//        hike.image = null;
-
-
-// Add the Hike to the Firebase Realtime Database
-//        myRef.child("hikes").child(Integer.toString(6)).setValue(hike);
-    }
-
     private void close() {
-        if(buttonVisibilityListener!=null){
-            buttonVisibilityListener.callBackMethod();
-        }
-//        if(homeScreenVisibilityListener!=null){
-//            homeScreenVisibilityListener.callBackMethodHomeScreen();
-//        }
-        getActivity().onBackPressed();
-        getActivity().getSupportFragmentManager().popBackStack();
+        startActivity(new Intent(getContext(), MainActivity.class));
     }
 
     @Override
@@ -309,11 +291,8 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
 
     void initViews(View view){
         btnClose = view.findViewById(R.id.crossButton);
-//        datePicker = view.findViewById(R.id.date);
         txtParking = view.findViewById(R.id.parking);
         txtDate = view.findViewById(R.id.date);
-//        showDate = view.findViewById(R.id.txtEnterDate);
-//        parkingAvailable = view.findViewById(R.id.txtParking);
         difficultiesSpinner = view.findViewById(R.id.difficultySpinner);
         edtName = view.findViewById(R.id.txtEnterHikeName);
         edtLocation = view.findViewById(R.id.txtEnterLocation);
@@ -324,7 +303,6 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
         textBoxLength = view.findViewById(R.id.length);
         textBoxLocation = view.findViewById(R.id.location);
         edtElevation = view.findViewById(R.id.txtElevation);
-//        textBoxDate = view.findViewById(R.id.date);
         btnDone = view.findViewById(R.id.checkButton);
         btnAddImage = view.findViewById(R.id.btnAddImage);
     }
@@ -341,5 +319,6 @@ public class AddHikeFragment extends Fragment implements AdapterView.OnItemSelec
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback.
     }
+
 
 }

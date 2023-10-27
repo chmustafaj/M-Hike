@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -33,7 +34,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment{
     private FragmentHomeBinding binding;
     Toolbar homeToolbar;
     private RecyclerView recyclerViewHikes;
@@ -42,6 +43,7 @@ public class HomeFragment extends Fragment {
     private TextView Empty;
     ArrayList<Hike> allHikes = new ArrayList<>();
     HomeScreenVisibilityListener homeScreenVisibilityListener;
+    View root;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -49,7 +51,7 @@ public class HomeFragment extends Fragment {
                 new ViewModelProvider(this).get(HomeViewModel.class);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        root = binding.getRoot();
         initViews(root);
         initRecView();
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
@@ -135,6 +137,24 @@ public class HomeFragment extends Fragment {
         super.onResume();
         Log.d("TAG", "onResume: ");
     }
+    public void refreshRecView(Hike hike){
+        adapter = new HikeRecyclerViewAdapter();
+
+        adapter.addHike(hike);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.d("TAG", "onViewCreated: ");
+    }
+    //    @Override
+//    public void callbackMethodAddHike(){
+//        Log.d("TAG", "callbackMethodAddHike: ");
+//        initRecView();
+//
+//    }
 
 
 }

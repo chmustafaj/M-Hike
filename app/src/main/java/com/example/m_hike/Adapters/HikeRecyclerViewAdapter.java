@@ -1,10 +1,7 @@
-package com.example.m_hike;
+package com.example.m_hike.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.media.Image;
-import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +12,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.m_hike.objects.Hike;
+import com.example.m_hike.Activities.HikeActivity;
+import com.example.m_hike.R;
+import com.example.m_hike.Models.Hike;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.concurrent.BlockingDeque;
 
 public class HikeRecyclerViewAdapter extends RecyclerView.Adapter<HikeRecyclerViewAdapter.ViewHolder> {
     private ArrayList<Hike> hikesList = new ArrayList<>();

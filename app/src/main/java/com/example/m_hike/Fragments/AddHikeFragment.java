@@ -1,7 +1,6 @@
-package com.example.m_hike;
+package com.example.m_hike.Fragments;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,14 +10,10 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.provider.MediaStore;
-import android.telecom.Call;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,10 +26,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.m_hike.database.AppDatabase;
-import com.example.m_hike.objects.Hike;
-import com.example.m_hike.objects.Observation;
-import com.example.m_hike.ui.home.HomeFragment;
+import com.example.m_hike.Callbacks.ButtonVisibilityListener;
+import com.example.m_hike.Callbacks.CallbackInterfaceAddHike;
+import com.example.m_hike.Activities.MainActivity;
+import com.example.m_hike.R;
+import com.example.m_hike.Database.AppDatabase;
+import com.example.m_hike.Models.Hike;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;

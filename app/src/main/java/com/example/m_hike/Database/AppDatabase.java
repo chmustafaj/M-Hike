@@ -1,4 +1,4 @@
-package com.example.m_hike.database;
+package com.example.m_hike.Database;
 
 import android.content.Context;
 
@@ -7,8 +7,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.example.m_hike.objects.Hike;
-import com.example.m_hike.objects.Observation;
+import com.example.m_hike.Models.Hike;
+import com.example.m_hike.Models.Observation;
 
 @Database(entities = {Hike.class, Observation.class}, version = 2)
 @TypeConverters(Converters.class )

@@ -1,4 +1,4 @@
-package com.example.m_hike.ui.search;
+package com.example.m_hike.Fragments;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,12 +13,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.m_hike.HikeRecyclerViewAdapter;
+import com.example.m_hike.Adapters.HikeRecyclerViewAdapter;
 import com.example.m_hike.R;
-import com.example.m_hike.database.AppDatabase;
+import com.example.m_hike.Database.AppDatabase;
 import com.example.m_hike.databinding.FragmentSearchBinding;
-import com.example.m_hike.objects.Hike;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.example.m_hike.Models.Hike;
+import com.example.m_hike.ui.Search.SearchViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
@@ -88,7 +88,6 @@ public class SearchFragment extends Fragment {
 
             for (Hike item : allItems) {
                 String hikeName = item.getName().toLowerCase().replaceAll("\\s", ""); // Convert hike name to lowercase and remove spaces
-
                 if (hikeName.contains(searchText)) {
                     items.add(item);
                 }

@@ -1,4 +1,4 @@
-package com.example.m_hike.database;
+package com.example.m_hike.Database;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -6,8 +6,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.m_hike.objects.Hike;
-import com.example.m_hike.objects.Observation;
+import com.example.m_hike.Models.Observation;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.m_hike;
+package com.example.m_hike.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -6,21 +6,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Pair;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.m_hike.database.AppDatabase;
-import com.example.m_hike.objects.Hike;
-import com.example.m_hike.objects.Observation;
+import com.example.m_hike.Callbacks.ObservationAddedListener;
+import com.example.m_hike.Fragments.AddObservationsDialog;
+import com.example.m_hike.R;
+import com.example.m_hike.Adapters.ObservationsRecyclerViewAdapter;
+import com.example.m_hike.Database.AppDatabase;
+import com.example.m_hike.Models.Hike;
+import com.example.m_hike.Models.Observation;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class HikeActivity extends AppCompatActivity implements ObservationAddedListener {
@@ -46,7 +46,7 @@ public class HikeActivity extends AppCompatActivity implements ObservationAddedL
         if(intent!=null){
             hid = intent.getIntExtra("hid", 0);
             initRecView();
-            setViews();
+            setViews();hd
             txtAddObservations.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

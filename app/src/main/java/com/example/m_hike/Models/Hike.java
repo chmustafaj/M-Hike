@@ -1,7 +1,6 @@
-package com.example.m_hike.objects;
+package com.example.m_hike.Models;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

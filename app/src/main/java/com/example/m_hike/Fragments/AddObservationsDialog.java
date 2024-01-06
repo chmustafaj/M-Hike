@@ -1,4 +1,4 @@
-package com.example.m_hike;
+package com.example.m_hike.Fragments;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -15,16 +15,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.m_hike.database.AppDatabase;
-import com.example.m_hike.objects.Hike;
-import com.example.m_hike.objects.Observation;
+import com.example.m_hike.Callbacks.ObservationAddedListener;
+import com.example.m_hike.R;
+import com.example.m_hike.Database.AppDatabase;
+import com.example.m_hike.Models.Hike;
+import com.example.m_hike.Models.Observation;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;

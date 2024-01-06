@@ -1,11 +1,11 @@
-package com.example.m_hike;
+package com.example.m_hike.Activities;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
-import com.example.m_hike.objects.Hike;
-import com.example.m_hike.ui.home.HomeFragment;
+import com.example.m_hike.Fragments.AddHikeFragment;
+import com.example.m_hike.R;
+import com.example.m_hike.Fragments.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;

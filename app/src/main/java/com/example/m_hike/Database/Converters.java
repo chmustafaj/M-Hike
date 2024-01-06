@@ -1,4 +1,4 @@
-package com.example.m_hike.database;
+package com.example.m_hike.Database;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

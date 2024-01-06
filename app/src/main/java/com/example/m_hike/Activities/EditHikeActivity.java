@@ -1,4 +1,4 @@
-package com.example.m_hike;
+package com.example.m_hike.Activities;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
@@ -22,8 +22,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.m_hike.database.AppDatabase;
-import com.example.m_hike.objects.Hike;
+import com.example.m_hike.R;
+import com.example.m_hike.Database.AppDatabase;
+import com.example.m_hike.Models.Hike;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 

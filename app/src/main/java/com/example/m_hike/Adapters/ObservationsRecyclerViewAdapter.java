@@ -1,4 +1,4 @@
-package com.example.m_hike;
+package com.example.m_hike.Adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.m_hike.objects.Observation;
+import com.example.m_hike.R;
+import com.example.m_hike.Models.Observation;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,5 @@
-package com.example.m_hike.ui.home;
+package com.example.m_hike.Fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,21 +17,15 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.m_hike.AddHikeFragment;
-import com.example.m_hike.ButtonVisibilityListener;
-import com.example.m_hike.CallbackInterfaceAddHike;
-import com.example.m_hike.HikeRecyclerViewAdapter;
-import com.example.m_hike.HomeScreenVisibilityListener;
-import com.example.m_hike.MainActivity;
+import com.example.m_hike.Adapters.HikeRecyclerViewAdapter;
+import com.example.m_hike.Callbacks.HomeScreenVisibilityListener;
 import com.example.m_hike.R;
-import com.example.m_hike.database.AppDatabase;
+import com.example.m_hike.Database.AppDatabase;
 import com.example.m_hike.databinding.FragmentHomeBinding;
-import com.example.m_hike.objects.Hike;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.example.m_hike.Models.Hike;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class HomeFragment extends Fragment{
     private FragmentHomeBinding binding;
@@ -148,7 +141,7 @@ public class HomeFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Log.d("TAG", "onViewCreated: ");
-    }
+    }i
     //    @Override
 //    public void callbackMethodAddHike(){
 //        Log.d("TAG", "callbackMethodAddHike: ");
